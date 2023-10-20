@@ -1,25 +1,9 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React from "react";
 import { CircularProgress } from "@material-ui/core";
 
 const DocketList = (props) => {
-  const [dockets, setDockets] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const { refresh, setRefresh } = props;
-  const fetchData = async () => {
-    setLoading(true);
-    await fetch("https://dockets.onrender.com/getDocketList")
-      .then((response) => response.json())
-      .then((data) => setDockets(data))
-      .catch((err) => console.log(err));
-    setLoading(false);
-    setRefresh(false);
-  };
-  useEffect(() => {
-    if (refresh) {
-      fetchData();
-    }
-  }, [refresh]);
+  const { dockets, loading } = props;
+
   if (loading) return <CircularProgress />;
   if (dockets.length > 0) {
     return (

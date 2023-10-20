@@ -4,7 +4,7 @@ import { Form, Formik, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 const DocketForm = (props) => {
-  const { open, onClose, data ,setRefresh} = props;
+  const { open, onClose, data, fetchData } = props;
   const [poList, setPOList] = useState([]);
   const initialValues = {
     name: "",
@@ -48,7 +48,7 @@ const DocketForm = (props) => {
               headers: { "Content-type": "application/json; charset=UTF-8" },
             });
             onClose();
-            setRefresh(true);
+            fetchData();
           }}
         >
           {({ isSubmitting, values, setFieldValue, errors }) => (

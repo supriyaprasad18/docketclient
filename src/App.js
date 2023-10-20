@@ -6,9 +6,19 @@ import DocketList from "./modules";
 function App() {
   const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);
-  const [refresh,setRefresh]=useState(true);
+  const [dockets, setDockets] = useState([]);
+  const [loading, setLoading] = useState(false);
 
+  const fetchData = async () => {
+    setLoading(true);
+    await fetch("https://dockets.onrender.com/getDocketList")
+      .then((response) => response.json())
+      .then((data) => setDockets(data))
+      .catch((err) => console.log(err));
+    setLoading(false);
+  };
   useEffect(() => {
+    fetchData();
     fetch("https://dockets.onrender.com/getFileData")
       .then((response) => response.json())
       .then((data) => setData(data));
@@ -34,8 +44,8 @@ function App() {
       >
         Create Docket
       </button>
-      <DocketList refresh={refresh} setRefresh={setRefresh}/>
-      <DocketForm open={open} onClose={() => setOpen(false)} data={data} setRefresh={setRefresh}/>
+      <DocketList dockets={dockets} loading={loading}/>
+      <DocketForm open={open} onClose={() => setOpen(false)} data={data} fetchData={fetchData}/>
     </div>
   );
 }
